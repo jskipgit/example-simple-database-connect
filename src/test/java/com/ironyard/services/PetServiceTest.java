@@ -17,44 +17,46 @@ public class PetServiceTest {
 
     @Before
     public void truncateBefore(){
-        System.out.println("truncateBefore");
         DbService ds = new DbService();
         ds.truncate("helloworld.pets");
     }
 
-    @After
-    public void truncateAfter(){
-        System.out.println("truncateAfter");
-        DbService ds = new DbService();
-        ds.truncate("helloworld.pets");
-    }
     @Test
     public void getAllPetsFromDatabase() throws Exception {
-        // TODO .. First insert stuff
-        System.out.println("getAllPetsFromDatabase");
         PetService ps = new PetService();
+        ps.save(new Pet("pet1", 1, "owner1", "color1", "dog"));
+        ps.save(new Pet("pet2", 1, "owner2", "color2", "cat"));
+        ps.save(new Pet("pet3", 1, "owner3", "color3", "bird"));
         List<Pet> found = ps.getAllPetsFromDatabase();
-
         assertEquals("Found unexpected number of rows.",3, found.size());
     }
 
     @Test
     public void getPetByIdFromDatabase() throws Exception {
-        // TODO .. First insert stuff
-        System.out.println("getPetByIdFromDatabase");
+        // Create pet with a known name
         PetService ps = new PetService();
-        Pet found = ps.getPetById(4);
-        assertEquals("incorrect id",4, found.getId());
-    }
+        Pet saveMe = ps.save(new Pet("pet2", 1, "owner2", "color2", "cat"));
+
+        // now get pet by id and ensure it's the same pet
+        Pet found = ps.getPetById(saveMe.getId());
+        assertEquals("Name 404",saveMe.getName(), found.getName());
+        assertEquals("getColor 404",saveMe.getColor(), found.getColor());
+        assertEquals("getType 404",saveMe.getType(), found.getType());
+        assertEquals("getAge 404",saveMe.getAge(), found.getAge());
+        assertEquals("getOwner 404",saveMe.getOwner(), found.getOwner());    }
 
     @Test
     public void getPetByNameFromDatabase() throws Exception {
         // TODO .. Fist insert stuff
         System.out.println("getPetByNameFromDatabase");
         PetService ps = new PetService();
+        Pet saveMe = ps.save(new Pet("pepper", 1, "owner2", "color2", "cat"));
         Pet found = ps.getPetByName("pepper");
-        assertNotNull(found);
-        assertEquals("incorrect id",3, found.getId());
+        assertEquals("Name 404",saveMe.getName(), found.getName());
+        assertEquals("getColor 404",saveMe.getColor(), found.getColor());
+        assertEquals("getType 404",saveMe.getType(), found.getType());
+        assertEquals("getAge 404",saveMe.getAge(), found.getAge());
+        assertEquals("getOwner 404",saveMe.getOwner(), found.getOwner());
     }
 
     @Test

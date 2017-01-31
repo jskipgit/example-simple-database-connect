@@ -16,8 +16,7 @@ public class DbService {
 
     public void truncate(String tablename){
         try {
-            DbService dbService = new DbService();
-            Connection con = dbService.getConnection();
+            Connection con = this.getConnection();
             Statement s = con.createStatement();
             s.execute("TRUNCATE "+tablename);
         }catch(Throwable t){

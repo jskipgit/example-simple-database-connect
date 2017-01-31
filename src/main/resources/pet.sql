@@ -9,3 +9,4 @@ CREATE TABLE helloworld.pets
 );
 CREATE UNIQUE INDEX pets_pet_name_uindex ON helloworld.pets (pet_name);
 INSERT INTO helloworld.pets (pet_name, pet_type, pet_age, pet_own_name, pet_color, pet_id) VALUES ('test', 'test', 3, 'asdf', 'asdf', 115);
+

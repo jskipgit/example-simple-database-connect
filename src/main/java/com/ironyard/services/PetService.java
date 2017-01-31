@@ -33,14 +33,14 @@ public class PetService {
         return found;
     }
 
-    public void save(Pet aPetToSave){
+    public Pet save(Pet aPetToSave){
         try {
             DbService dbService = new DbService();
             Connection con = dbService.getConnection();
             PreparedStatement ps = con.prepareStatement(
                     "INSERT INTO helloworld.pets " +
                             "(pet_name, pet_type, pet_age, pet_own_name, pet_color) " +
-                            "VALUES (?, ?, ?, ?, ?);");
+                            "VALUES (?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
             // set values
             ps.setString(1,aPetToSave.getName());
             ps.setString(2,aPetToSave.getType());
@@ -49,9 +49,16 @@ public class PetService {
             ps.setString(5,aPetToSave.getColor());
             ps.execute();
 
+            // populate id that was generated from DB
+            ResultSet rs = ps.getGeneratedKeys();
+            if(rs.next()){
+                aPetToSave.setId(rs.getLong("pet_id"));
+            }
+
         }catch(Throwable t){
             t.printStackTrace();
         }
+        return aPetToSave;
     }
 
     /**
